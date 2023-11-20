@@ -17,6 +17,15 @@ export default function App() {
     setInput("");
   };
 
+  const deleteTodo = (e) => {
+    const container = e.target.closest("div");
+    const value = container.querySelector("span").textContent;
+
+    setTodos((prevTodos) => {
+      return prevTodos.filter((todo) => todo.name != value);
+    });
+  };
+
   return (
     <main>
       <div>
@@ -25,8 +34,8 @@ export default function App() {
             return (
               <div key={todo.id}>
                 <input type="checkbox" />
-                {todo.name}
-                <button>Delete</button>
+                <span>{todo.name}</span>
+                <button onClick={deleteTodo}>Delete</button>
               </div>
             );
           })}
