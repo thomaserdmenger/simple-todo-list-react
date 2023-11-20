@@ -1,9 +1,9 @@
 import * as React from "react";
+import TodoItem from "./components/TodoItem";
 
 export default function App() {
   const [input, setInput] = React.useState("");
   const [todos, setTodos] = React.useState([]);
-  // const [checked, setChecked] = React.useState(false);
 
   const handleChange = ({ target }) => {
     const { value } = target;
@@ -12,8 +12,6 @@ export default function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log(e);
 
     if (input === "") return;
 
@@ -50,21 +48,12 @@ export default function App() {
         {todos != null &&
           todos.map((todo) => {
             return (
-              <div key={todo.id}>
-                <input
-                  type="checkbox"
-                  checked={todo.checked}
-                  onChange={(e) => handleChecked(todo.id, e.target.checked)}
-                />
-                <span
-                  style={
-                    todo.checked ? { textDecoration: "line-through" } : null
-                  }
-                >
-                  {todo.name}
-                </span>
-                <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-              </div>
+              <TodoItem
+                key={todo.id}
+                {...todo}
+                deleteTodo={deleteTodo}
+                handleChecked={handleChecked}
+              />
             );
           })}
       </div>
