@@ -3,6 +3,7 @@ import * as React from "react";
 export default function App() {
   const [input, setInput] = React.useState("");
   const [todos, setTodos] = React.useState([]);
+  // const [checked, setChecked] = React.useState(false);
 
   const handleChange = ({ target }) => {
     const { value } = target;
@@ -11,8 +12,16 @@ export default function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(e);
+
+    if (input === "") return;
+
     setTodos((prevTodos) => {
-      return [{ id: crypto.randomUUID(), name: input }, ...prevTodos];
+      return [
+        { id: crypto.randomUUID(), name: input, checked: false },
+        ...prevTodos,
+      ];
     });
     setInput("");
   };
@@ -23,6 +32,18 @@ export default function App() {
     });
   };
 
+  const handleChecked = (id, checked) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((todos) => {
+        if (todos.id === id) {
+          return { ...todos, checked };
+        } else {
+          return todos;
+        }
+      });
+    });
+  };
+
   return (
     <main>
       <div>
@@ -30,8 +51,18 @@ export default function App() {
           todos.map((todo) => {
             return (
               <div key={todo.id}>
-                <input type="checkbox" />
-                <span>{todo.name}</span>
+                <input
+                  type="checkbox"
+                  checked={todo.checked}
+                  onChange={(e) => handleChecked(todo.id, e.target.checked)}
+                />
+                <span
+                  style={
+                    todo.checked ? { textDecoration: "line-through" } : null
+                  }
+                >
+                  {todo.name}
+                </span>
                 <button onClick={() => deleteTodo(todo.id)}>Delete</button>
               </div>
             );
