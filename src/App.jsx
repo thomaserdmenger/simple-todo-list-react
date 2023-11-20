@@ -2,13 +2,19 @@ import * as React from "react";
 
 export default function App() {
   const [input, setInput] = React.useState("");
-  const [todos, setTodos] = React.useState([
-    { id: crypto.randomUUID(), name: "Homework" },
-    { id: crypto.randomUUID(), name: "Kitchenwork" },
-  ]);
+  const [todos, setTodos] = React.useState([]);
 
   const handleChange = ({ target }) => {
-    setInput((prevInput) => target.value);
+    const { value } = target;
+    setInput(value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setTodos((prevTodos) => {
+      return [{ id: crypto.randomUUID(), name: input }, ...prevTodos];
+    });
+    setInput("");
   };
 
   return (
@@ -26,7 +32,7 @@ export default function App() {
           })}
       </div>
       <br />
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>Todo List</label>
         <br />
         <input
